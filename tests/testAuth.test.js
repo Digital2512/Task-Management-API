@@ -23,7 +23,7 @@ describe('User Registeration and Login Tests', () => {
         const response = await request(app)
             .post('/api/users/register')
             .send({
-                username: 'testUser',
+                username: 'testUser2',
                 password: 'testUser123!'
             });
         expect(response.statusCode).toBe(201);
@@ -35,7 +35,7 @@ describe('User Registeration and Login Tests', () => {
         const response = await request(app)
             .post('/api/users/register')
             .send({
-                username: 'testUser',
+                username: 'testUser2',
                 password: 'testUser123!'
             });
 
@@ -47,7 +47,7 @@ describe('User Registeration and Login Tests', () => {
         const response = await request(app)
             .post('/api/users/register')
             .send({
-                username: 'testUser1',
+                username: 'testUser3',
                 password: 'testuser123'
             });
 
@@ -59,7 +59,7 @@ describe('User Registeration and Login Tests', () => {
         const response = await request(app)
             .post('/api/users/login')
             .send({
-                username: 'testUser',
+                username: 'testUser2',
                 password: 'testUser123!',
             });
 
@@ -72,7 +72,7 @@ describe('User Registeration and Login Tests', () => {
         const response = await request(app)
             .post('/api/users/login')
             .send({
-                username: 'testUser',
+                username: 'testUser2',
                 password: 'testuser123.'
             });
 
