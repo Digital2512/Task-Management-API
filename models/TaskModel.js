@@ -13,11 +13,15 @@ const taskSchema = new mongoose.Schema({
         enum: ['INBOX', 'PLANNED', 'IN-PROGRESS', 'COMPLETED', 'CANCELLED'],
         default: 'INBOX',
     },
+    category:{
+        type: String,
+        required: true,
+    },
     dueDate: {
         type: Date,
     },
     host:{
-        tyrpe: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
