@@ -7,6 +7,7 @@ const taskSchema = new mongoose.Schema({
     },
     description:{
         type: String,
+        default: 'Description',
     },
     status:{
         type: String,
@@ -14,11 +15,13 @@ const taskSchema = new mongoose.Schema({
         default: 'INBOX',
     },
     category:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
         required: true,
     },
     dueDate: {
         type: Date,
+        default: new Date(),
     },
     host:{
         type: mongoose.Schema.Types.ObjectId,
@@ -27,6 +30,7 @@ const taskSchema = new mongoose.Schema({
     },
     assignees: [{
         type: mongoose.Schema.Types.ObjectId,
+        default: [],
         ref: 'User',
     }]
 }, {timestamps: true});

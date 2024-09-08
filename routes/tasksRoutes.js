@@ -10,7 +10,8 @@ router.post(
     authMiddleware,
     [
         body('title').not().isEmpty().withMessage('Title is required'),
-        body('category').not().isEmpty().withMessage('Category must be filled'),
+        body('categoryName').not().isEmpty().withMessage('Category must be filled'),
+        body('status').not().isEmpty().withMessage('Status should be filed'),
         body('host').not().isEmpty().withMessage('Host must not be empty'),
         body('dueDate').optional().isISO8601().toDate().withMessage('Due date must be a valid date'),
         body('assignees').optional().isArray().withMessage('Assignees should be an array of userIDs'),
@@ -23,6 +24,11 @@ router.get('/retrieveAll', authMiddleware, taskController.getTasks);
 router.get('/retrieveByID/:id', authMiddleware, [
     param('id').isMongoId().withMessage('Invalid Task ID')
 ], taskController.getTaskById);
+
+router.get('/retrieveByCategoryID/:categoryID', authMiddleware, [
+    param('categoryID').isMongoId().withMessage('Invalid Category ID')
+], taskController.getTasksByCategoryID);
+
 
 router.put('/update/:id', authMiddleware, [
     param('id').isMongoId().withMessage('Invalid Task ID'),

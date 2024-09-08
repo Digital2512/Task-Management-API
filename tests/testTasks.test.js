@@ -28,21 +28,24 @@ afterAll(async () => {
     await mongoose.disconnect();
 });
 
-describe('Task Manipulation', () => {
+describe('Task Management', () => {
     test('should create a task without assignees', async () => {
         const response = await request(app)
             .post('/api/tasks/create')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 title: 'New Task without assignees',
-                category: 'PERSONAL',
+                categoryName: 'PERSONAL',
+                status: 'INBOX',
                 dueDate: new Date(),
                 host: userID1,
             });
 
+            console.log(response.body);
+
         expect(response.statusCode).toBe(201);
         expect(response.body.title).toBe('New Task without assignees');
-        expect(response.body.category).toBe('INBOX');
+        expect(response.body.status).toBe('INBOX');
         expect(response.body.host).toBe(userID1);
     });
 
@@ -52,15 +55,17 @@ describe('Task Manipulation', () => {
             .set('Authorization', `Bearer ${token}`)
             .send({
                 title: 'New Task with assignees',
-                category: 'GROUP',
+                categoryName: 'GROUP',
+                status: 'INBOX',
                 dueDate: new Date(),
                 host: userID1,
                 assignees: [userID2]
             });
 
+            console.log(response.body);
+
         expect(response.statusCode).toBe(201);
         expect(response.body.title).toBe('New Task with assignees');
-        expect(response.body.category).toBe('INBOX');
         expect(response.body.host).toBe(userID1);
         expect(response.body.assignees).toEqual(
             expect.arrayContaining([userID2])
@@ -77,7 +82,7 @@ describe('Task Manipulation', () => {
     });
 
     test('should get a task by the ID', async () => {
-        const taskID = '66dc8490f8ca079e79948e9b';
+        const taskID = '66dde1ba88138a5f70792a61';
         const response = await request(app)
             .get(`/api/tasks/retrieveByID/${taskID}`)
             .set('Authorization', `Bearer ${token}`)
@@ -86,8 +91,18 @@ describe('Task Manipulation', () => {
         expect(response.body).toBeDefined(); // Assuming response should have a body
     });
 
+    test('should get a task by the category ID', async () => {
+        const categoryID = '66ddceaf812fb601a9050631';
+        const response = await request(app)
+            .get(`/api/tasks/retrieveByCategoryID/${categoryID}`)
+            .set('Authorization', `Bearer ${token}`)
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toBeDefined(); // Assuming response should have a body
+    });
+
     test('should update a task', async() => {
-        const taskID = '66dc8490f8ca079e79948e9d';
+        const taskID = '66dde1ba88138a5f70792a61';
         const response = await request(app)
             .put(`/api/tasks/update/${taskID}`)
             .set('Authorization', `Bearer ${token}`)
@@ -97,13 +112,15 @@ describe('Task Manipulation', () => {
                 assignees: [userID1, userID2]
             });
 
+            console.log(response.body);
+
         expect(response.statusCode).toBe(200);
         expect(response.body.title).toBe('Updated task');
         expect(response.body.status).toBe('IN-PROGRESS');
     });
 
     test('should delete a task', async() => {
-        const taskID = '66dc8490f8ca079e79948e9b';
+        const taskID = '66ddd2d5b890355c90e228fb';
         const response = await request(app)
             .delete(`/api/tasks/delete/${taskID}`)
             .set('Authorization', `Bearer ${token}`);
